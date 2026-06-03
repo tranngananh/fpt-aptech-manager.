@@ -3,7 +3,8 @@ import os
 from data_engine import DataEngine, NGUOI_HOC_FILE
 
 def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    pass
+    #os.system('cls' if os.name == 'nt' else 'clear')
 
 def in_danh_sach_canh_bao(danh_sach, tieu_de):
     """Hàm hỗ trợ in bảng danh sách dựa trên dữ liệu đã lọc"""

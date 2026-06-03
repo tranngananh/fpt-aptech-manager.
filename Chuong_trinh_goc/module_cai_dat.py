@@ -7,7 +7,8 @@ import hashlib
 USERS_FILE = './data/users.json'
 
 def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    pass
+    #os.system('cls' if os.name == 'nt' else 'clear')
 
 def _hash(password):
     """Hàm băm mật khẩu để bảo mật"""

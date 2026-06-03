@@ -3,7 +3,8 @@ import os
 from data_engine import DataEngine, NGUOI_HOC_FILE, DIEM_DANH_FILE
 
 def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    pass
+    #os.system('cls' if os.name == 'nt' else 'clear')
 
 def sync_to_nguoi_hoc():
     diem_danh = DataEngine.read_file(DIEM_DANH_FILE)
@@ -48,6 +49,15 @@ def xem_danh_sach_ngay():
 # THÊM MỚI: Hàm xem chi tiết điểm danh theo ngày
 def xem_thong_tin_diem_danh():
     clear_screen()
+    print("=== XEM CHI TIẾT ĐIỂM DANH ===")
+
+    danh_sach_ngay = xem_danh_sach_ngay()
+    if not danh_sach_ngay:
+        return
+
+    ngay_chon = input(
+        "\n👉 Nhập chính xác tên ngày muốn xem (hoặc '0' để HỦY): "
+    ).strip()
     print("=== XEM CHI TIẾT ĐIỂM DANH ===")
     danh_sach_ngay = xem_danh_sach_ngay()
     if not danh_sach_ngay: return

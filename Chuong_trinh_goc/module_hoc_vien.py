@@ -5,7 +5,8 @@ from datetime import datetime
 from data_engine import DataEngine, NGUOI_HOC_FILE, DIEM_DANH_FILE
 
 def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    pass
+    #os.system('cls' if os.name == 'nt' else 'clear')
 
 def hien_thi_danh_sach(danh_sach=None):
     if danh_sach is None:
@@ -148,14 +149,25 @@ def xoa_hoc_vien():
         print("🚫 Đã hủy thao tác xóa!")
         return
     
+    # 1. XÓA TRONG DANH SÁCH NGƯỜI HỌC CHÍNH
     ds = DataEngine.read_file(NGUOI_HOC_FILE)
     ds_moi = [hs for hs in ds if str(hs.get('id')) != id_xoa]
     
     if len(ds) == len(ds_moi):
         print("\n❌ Không tìm thấy học viên mang ID này!")
-    else:
-        DataEngine.write_file(NGUOI_HOC_FILE, ds_moi)
-        print("\n✅ Đã xóa học viên thành công!")
+        return
+        
+    DataEngine.write_file(NGUOI_HOC_FILE, ds_moi)
+
+    # 2. ĐỒNG BỘ: XÓA XẾP TẦNG TRONG FILE ĐIỂM DANH
+    diem_danh = DataEngine.read_file(DIEM_DANH_FILE)
+    for ngay, records in diem_danh.items():
+        # Dùng List Comprehension để giữ lại những bản ghi không chứa ID vừa xóa
+        diem_danh[ngay] = [rec for rec in records if str(rec.get('id')) != id_xoa]
+        
+    DataEngine.write_file(DIEM_DANH_FILE, diem_danh)
+
+    print("\n✅ Đã xóa học viên và đồng bộ dữ liệu điểm danh thành công!")
 
 def cap_nhat_hoc_vien():
     clear_screen()
@@ -228,8 +240,18 @@ def cap_nhat_hoc_vien():
     if dia_chi_moi: hoc_vien['dia_chi'] = dia_chi_moi
     
     DataEngine.write_file(NGUOI_HOC_FILE, ds)
-    print("\n✅ Cập nhật thông tin thành công!")
+    
+    # ĐỒNG BỘ: Cập nhật Tên và Lớp học mới sang file điểm danh
+    diem_danh = DataEngine.read_file(DIEM_DANH_FILE)
+    for ngay, records in diem_danh.items():
+        for rec in records:
+            if str(rec.get('id')) == id_sua:
+                rec['ho_va_ten'] = hoc_vien.get('ho_va_ten', rec.get('ho_va_ten'))
+                rec['lop_hoc'] = hoc_vien.get('lop_hoc', rec.get('lop_hoc', '-'))
+                
+    DataEngine.write_file(DIEM_DANH_FILE, diem_danh)
 
+    print("\n✅ Cập nhật thông tin và đồng bộ thành công!")
 def tim_kiem_hoc_vien():
     clear_screen()
     print("=== TÌM KIẾM HỌC VIÊN ===")

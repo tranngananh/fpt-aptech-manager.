@@ -14,7 +14,7 @@ import module_cai_dat
 
 def hien_thi_menu():
     """Hàm hiển thị giao diện Menu chính của chương trình"""
-    os.system('cls' if os.name == 'nt' else 'clear')
+   # os.system('cls' if os.name == 'nt' else 'clear')
     print("==================================================")
     print("      HỆ THỐNG QUẢN LÝ HỌC VIÊN & ĐIỂM DANH       ")
     print("==================================================")
